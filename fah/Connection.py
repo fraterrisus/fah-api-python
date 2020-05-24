@@ -6,7 +6,7 @@ import sys
 import socket
 import selectors
 
-import objects
+import fah.objects
 
 debug = True
 WSAEWOULDBLOCK = 10035
@@ -19,7 +19,11 @@ class Connection:
     FOOTER = re.compile(rb'\n---\n')
 
     MESSAGE_CONVERTERS = {
-        'slots': objects.Slots
+        'error': fah.objects.Error,
+        'heartbeat': fah.objects.Heartbeat,
+        # 'info': fah.objects.Info,
+        'options': fah.objects.Options,
+        'slots': fah.objects.Slots,
     }
 
 
@@ -113,7 +117,7 @@ class Connection:
                     self.close()
                     raise Exception('Timed out when reading')
 
-        except OSerror as err:
+        except OSError as err:
             # Error codes for nothing to read
             if err.errno not in [errno.EAGAIN, errno.EWOULDBLOCK, WSAEWOULDBLOCK]:
                 if data: return data

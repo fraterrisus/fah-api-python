@@ -1,2 +1,5 @@
-from .Slot import *
-from .Slots import *
+from .Error import Error
+from .Heartbeat import Heartbeat
+from .Options import Options
+from .Slot import Slot
+from .Slots import Slots
