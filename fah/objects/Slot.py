@@ -2,7 +2,7 @@
 
 class Slot:
     def __init__(self, obj):
-        self.id = obj['id']
+        self.id = int(obj['id'])
         self.status = obj['status']
         self.description = obj['description']
         self.options = obj['options']

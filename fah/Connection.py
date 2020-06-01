@@ -20,8 +20,9 @@ class Connection:
 
     MESSAGE_CONVERTERS = {
         'error': fah.objects.Error,
-        'heartbeat': fah.objects.Heartbeat,
+        'heartbeat': int,
         # 'info': fah.objects.Info,
+        'num-slots': int,
         'options': fah.objects.Options,
         'slots': fah.objects.Slots,
     }
@@ -107,7 +108,7 @@ class Connection:
                 if events:
                     for key, mask in events:
                         if mask & selectors.EVENT_READ:
-                            recv_data = self.socket.recv(128)
+                            recv_data = self.socket.recv(1024)
                             if recv_data:
                                 if debug: print('Got', len(recv_data), 'bytes')
                                 data += recv_data
@@ -177,7 +178,8 @@ class Connection:
     def convert(self, obj, message_type):
         converter = self.MESSAGE_CONVERTERS.get(message_type, None)
         if converter is None:
-            raise Exception('No converter found for message %s' % (message_type))
+            # raise Exception('No converter found for message %s' % (message_type))
+            return obj
 
         return converter(obj)
 
