@@ -24,7 +24,8 @@ class Connection:
         # 'info': fah.objects.Info,
         'num-slots': int,
         'options': fah.objects.Options,
-        'slots': fah.objects.Slots,
+        'slots': lambda o: [fah.objects.Slot(s) for s in o],
+        'units': lambda o: [fah.objects.Unit(s) for s in o],
     }
 
 

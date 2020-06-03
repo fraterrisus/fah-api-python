@@ -32,6 +32,9 @@ def pause(slot_id: int):
         __send_command('pause %d' % (slot_id))
     __end_conversation()
 
+def queue_info() -> list:
+    return __basic_command('queue-info')
+
 def save_all_options():
     __start_conversation()
     __send_command('save')
@@ -66,13 +69,13 @@ def set_slot_option(slot_id :int, key, value):
     __end_conversation()
     return opts
 
-def slot_info() -> fah.objects.Slots:
+def slot_info() -> list:
     __start_conversation()
-    info = __send_command_and_parse('slot-info')
-    for slot in info.slots:
+    slots = __send_command_and_parse('slot-info')
+    for slot in slots:
         slot.options = __send_command_and_parse('slot-options %d -a' % (slot.id))
     __end_conversation()
-    return info
+    return slots
     
 def unpause(slot_id :int):
     __start_conversation()
