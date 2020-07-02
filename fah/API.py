@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-from .Connection import Connection
+from fah.Connection import Connection
 
 import fah.objects
 
 __connection = None
 __password = None
-
 
 def set_password(new_pass):
     global __password
@@ -73,10 +72,10 @@ def slot_info() -> list:
     __start_conversation()
     slots = __send_command_and_parse('slot-info')
     for slot in slots:
-        slot.options = __send_command_and_parse('slot-options %d -a' % (slot.id))
+        slot['options'] = __send_command_and_parse('slot-options %s -a' % slot['id'])
     __end_conversation()
     return slots
-    
+
 def unpause(slot_id :int):
     __start_conversation()
     if slot_id is None:

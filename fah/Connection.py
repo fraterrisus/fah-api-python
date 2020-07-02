@@ -6,7 +6,7 @@ import sys
 import socket
 import selectors
 
-import fah.objects
+# import fah.objects
 
 debug = True
 WSAEWOULDBLOCK = 10035
@@ -19,13 +19,13 @@ class Connection:
     FOOTER = re.compile(rb'\n---\n')
 
     MESSAGE_CONVERTERS = {
-        'error': fah.objects.Error,
+        # 'error': fah.objects.Error,
         'heartbeat': int,
         # 'info': fah.objects.Info,
         'num-slots': int,
-        'options': fah.objects.Options,
-        'slots': lambda o: [fah.objects.Slot(s) for s in o],
-        'units': lambda o: [fah.objects.Unit(s) for s in o],
+        # 'options': fah.objects.Options,
+        # 'slots': lambda o: [fah.objects.Slot(s) for s in o],
+        # 'units': lambda o: [fah.objects.Unit(s) for s in o],
     }
 
 
@@ -60,7 +60,7 @@ class Connection:
         if err == errno.ECONNREFUSED: self.fail_reason = 'refused'
         elif err in [errno.ETIMEDOUT, errno.ENETDOWN, errno.ENETUNREACH]:
             self.fail_reason = 'connect'
-        else: self.fail_reason = 'error' 
+        else: self.fail_reason = 'error'
 
 
     def connection_lost(self):
@@ -113,7 +113,7 @@ class Connection:
                             if recv_data:
                                 if debug: print('Got', len(recv_data), 'bytes')
                                 data += recv_data
-                        
+
                 if not self.selector.get_map():
                     self.fail_reason = 'timeout'
                     self.close()
@@ -131,12 +131,12 @@ class Connection:
 
         return data
 
-    
+
     def write_data(self, bytes):
         if not self.is_connected(): self.open()
 
         data = bytes
-        bytes_written = 0 
+        bytes_written = 0
         self.selector.register(self.socket, selectors.EVENT_WRITE)
         try:
             while len(data) > 0:
