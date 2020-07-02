@@ -6,8 +6,6 @@ import sys
 import socket
 import selectors
 
-# import fah.objects
-
 debug = True
 WSAEWOULDBLOCK = 10035
 
@@ -19,13 +17,8 @@ class Connection:
     FOOTER = re.compile(rb'\n---\n')
 
     MESSAGE_CONVERTERS = {
-        # 'error': fah.objects.Error,
         'heartbeat': int,
-        # 'info': fah.objects.Info,
         'num-slots': int,
-        # 'options': fah.objects.Options,
-        # 'slots': lambda o: [fah.objects.Slot(s) for s in o],
-        # 'units': lambda o: [fah.objects.Unit(s) for s in o],
     }
 
 

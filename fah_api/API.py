@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 
-from fah.Connection import Connection
-
-import fah.objects
+from fah_api.Connection import Connection
 
 __connection = None
 __password = None
@@ -20,7 +18,7 @@ def info() -> dict:
 def num_slots() -> int:
     return __basic_command('num-slots')
 
-def options() -> fah.objects.Options:
+def options() -> dict:
     return __basic_command('options -a')
 
 def pause(slot_id: int):
