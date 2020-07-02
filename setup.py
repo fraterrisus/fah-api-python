@@ -8,7 +8,7 @@ setup(
   author = 'Ben Cordes',
   author_email = 'cordes.ben@gmail.com',
   url = 'https://github.com/fraterrisus/fah-api-python',
-  download_url = 'https://github.com/fraterrisus/fah-api-python/archive/v_01.tar.gz',
+  download_url = 'https://github.com/fraterrisus/fah-api-python/archive/v0.1.tar.gz',
   keywords = ['foldingathome'],
   install_requires=[],
   classifiers=[
