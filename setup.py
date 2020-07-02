@@ -1,7 +1,7 @@
 from distutils.core import setup
 setup(
-  name = 'fah',
-  packages = ['fah'],
+  name = 'fah_api',
+  packages = ['fah_api'],
   version = '0.1',
   license='MIT',
   description = 'A python3 library for controlling Folding@Home clients',
