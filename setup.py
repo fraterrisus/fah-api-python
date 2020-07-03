@@ -6,7 +6,7 @@ from distutils.core import setup
 setup(
   name = 'fah_api',
   packages = ['fah_api'],
-  version = '0.1',
+  version = '0.2',
   license='MIT',
   description = 'A python3 library for controlling Folding@Home clients',
 #  long_description = long_description,
@@ -14,7 +14,7 @@ setup(
   author = 'Ben Cordes',
   author_email = 'cordes.ben@gmail.com',
   url = 'https://github.com/fraterrisus/fah-api-python',
-  download_url = 'https://github.com/fraterrisus/fah-api-python/archive/v0.1.tar.gz',
+  download_url = 'https://github.com/fraterrisus/fah-api-python/archive/v0.2.tar.gz',
   keywords = ['foldingathome'],
   install_requires=[],
   python_requires='>=3',
