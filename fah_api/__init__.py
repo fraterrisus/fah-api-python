@@ -1,1 +1,2 @@
-from fah_api.API import *
+from .API import *
+from .errors import FahException, AuthException

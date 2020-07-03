@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from fah_api.Connection import Connection
+from .Connection import Connection
 
 __connection = None
 __password = None
@@ -22,65 +22,79 @@ def options() -> dict:
     return __basic_command('options -a')
 
 def pause(slot_id: int):
-    __start_conversation()
-    if slot_id is None:
-        __send_command('pause')
-    else:
-        __send_command('pause %d' % (slot_id))
-    __end_conversation()
+    try:
+        __start_conversation()
+        if slot_id is None:
+            __send_command('pause')
+        else:
+            __send_command('pause %d' % (slot_id))
+    finally:
+        __end_conversation()
 
 def queue_info() -> list:
     return __basic_command('queue-info')
 
 def save_all_options():
-    __start_conversation()
-    __send_command('save')
-    __end_conversation()
+    try:
+        __start_conversation()
+        __send_command('save')
+    finally:
+        __end_conversation()
 
 def set_idle(idle :bool =True, slot_id :int =None):
-    __start_conversation()
-    if idle:
-        if slot_id is None:
-            __send_command('on_idle')
+    try:
+        __start_conversation()
+        if idle:
+            if slot_id is None:
+                __send_command('on_idle')
+            else:
+                __send_command('on_idle %d' % (slot_id))
         else:
-            __send_command('on_idle %d' % (slot_id))
-    else:
-        if slot_id is None:
-            __send_command('always_on')
-        else:
-            __send_command('always_on %d' % (slot_id))
-    __end_conversation()
+            if slot_id is None:
+                __send_command('always_on')
+            else:
+                __send_command('always_on %d' % (slot_id))
+    finally:
+        __end_conversation()
 
 def set_power(power):
-    power = power.upper()
-    if power != 'LIGHT' and power != 'MEDIUM' and power != 'FULL':
-        raise Exception('Argument to set_power() must be LIGHT, MEDIUM, or FULL')
-    __start_conversation()
-    __send_command('options power="%s"' % (power))
-    __send_command('save')
-    __end_conversation()
+    try:
+        power = power.upper()
+        if power != 'LIGHT' and power != 'MEDIUM' and power != 'FULL':
+            raise Exception('Argument to set_power() must be LIGHT, MEDIUM, or FULL')
+        __start_conversation()
+        __send_command('options power="%s"' % (power))
+        __send_command('save')
+    finally:
+        __end_conversation()
 
 def set_slot_option(slot_id :int, key, value):
-    __start_conversation()
-    opts = __send_command_and_parse('slot-options %d %s=%s' % (slot_id, key, value))
-    __end_conversation()
-    return opts
+    try:
+        __start_conversation()
+        opts = __send_command_and_parse('slot-options %d %s=%s' % (slot_id, key, value))
+        return opts
+    finally:
+        __end_conversation()
 
 def slot_info() -> list:
-    __start_conversation()
-    slots = __send_command_and_parse('slot-info')
-    for slot in slots:
-        slot['options'] = __send_command_and_parse('slot-options %s -a' % slot['id'])
-    __end_conversation()
-    return slots
+    try:
+        __start_conversation()
+        slots = __send_command_and_parse('slot-info')
+        for slot in slots:
+            slot['options'] = __send_command_and_parse('slot-options %s -a' % slot['id'])
+        return slots
+    finally:
+        __end_conversation()
 
 def unpause(slot_id :int):
-    __start_conversation()
-    if slot_id is None:
-        __send_command('unpause')
-    else:
-        __send_command('unpause %d' % (slot_id))
-    __end_conversation()
+    try:
+        __start_conversation()
+        if slot_id is None:
+            __send_command('unpause')
+        else:
+            __send_command('unpause %d' % (slot_id))
+    finally:
+        __end_conversation()
 
 ###
 
@@ -107,10 +121,12 @@ def __end_conversation():
 
 
 def __basic_command(chars):
-    __start_conversation()
-    rval = __send_command_and_parse(chars)
-    __end_conversation()
-    return rval
+    try:
+        __start_conversation()
+        rval = __send_command_and_parse(chars)
+        return rval
+    finally:
+        __end_conversation()
 
 
 def __send_command(chars):

@@ -6,7 +6,9 @@ import sys
 import socket
 import selectors
 
-debug = True
+from .errors import FahException, AuthException
+
+debug = False
 WSAEWOULDBLOCK = 10035
 
 if debug:
@@ -60,7 +62,7 @@ class Connection:
         print('Connection lost')
         self._close()
         self.fail_reason = 'closed'
-        raise Exception('Lost connection')
+        raise FahException('Lost connection')
 
 
     def open(self):
@@ -73,7 +75,7 @@ class Connection:
         if err != 0 and not err in [
             errno.EINPROGRESS, errno.EWOULDBLOCK, WSAEWOULDBLOCK]:
             self.fail_reason = 'connect'
-            raise Exception('Connection failed: ' + errno.errorcode[err])
+            raise FahException('Connection failed: ' + errno.errorcode[err])
 
         self.connected = True
 
@@ -109,8 +111,11 @@ class Connection:
 
                 if not self.selector.get_map():
                     self.fail_reason = 'timeout'
-                    self.close()
-                    raise Exception('Timed out when reading')
+                    raise FahException('Timed out when reading')
+
+                if b"FAILED" in data:
+                    self.fail_reason = 'auth'
+                    raise AuthException('Bad password')
 
         except OSError as err:
             # Error codes for nothing to read
@@ -188,4 +193,3 @@ if __name__ == '__main__':
     slots = conn.parse_pyon(text)
     print(slots)
     conn.close()
-
