@@ -1,2 +1,2 @@
-from .API import *
+from .API import API
 from .errors import FahException, AuthException
