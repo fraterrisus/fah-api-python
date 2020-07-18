@@ -3,3 +3,6 @@ class FahException(Exception):
 
 class AuthException(FahException):
     pass
+
+class HostException(FahException):
+    pass
