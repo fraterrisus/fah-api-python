@@ -6,7 +6,7 @@ import sys
 import socket
 import selectors
 
-from .errors import FahException, AuthException
+from .errors import FahException, AuthException, HostException
 
 debug = False
 WSAEWOULDBLOCK = 10035
@@ -70,7 +70,10 @@ class Connection:
         server_addr = (self.host, self.port)
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.setblocking(False)
-        err = self.socket.connect_ex(server_addr)
+        try:
+            err = self.socket.connect_ex(server_addr)
+        except (socket.herror, socket.gaierror) as e:
+            raise HostException('Error resolving host: ' + e.strerror)
 
         if err != 0 and not err in [
             errno.EINPROGRESS, errno.EWOULDBLOCK, WSAEWOULDBLOCK]:
